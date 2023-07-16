@@ -1,0 +1,41 @@
+-- 과제1-1
+
+SELECT
+  c.CustomerID,
+  c.CustomerName,
+  SUM(p.Price * od.Quantity) AS TotalPurchaseAmount
+FROM
+  Customers c
+  INNER JOIN Orders o ON c.CustomerID = o.CustomerID
+  INNER JOIN OrderDetails od ON o.OrderID = od.OrderID
+  INNER JOIN Products p ON od.ProductID = p.ProductID
+GROUP BY
+  c.CustomerID, c.CustomerName;
+
+/*
+1. Customers, Orders, OrderDetails, Products 테이블 조인
+2. 고객 별 구매금액 출력
+3. 결과 열 CustomerID, CustomerName, TotalPurchaseAmount 구성
+*/
+
+-- 과제1-2
+
+SELECT
+  c.CategoryName,
+  SUM(od.Quantity) AS TotalQuantity,
+  SUM(p.Price * od.Quantity) AS TotalSalesAmount
+FROM
+  Categories c
+  INNER JOIN Products p ON c.CategoryID = p.CategoryID
+  INNER JOIN OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY
+  c.CategoryName
+HAVING
+  SUM(od.Quantity) >= 2000;
+
+/*
+1. Categories, Products, OrderDetails 테이블 조인
+2. 카테고리별 판매량과 판매 금액 출력
+3. HAVING 절 사용, 판매량 2000개 이상 상품 필터링
+4. 결과 열 CategoryName, TotalQuantity, TotalSalesAmount 구성
+*/
